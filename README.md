@@ -67,7 +67,7 @@ The license secret is a Kubernetes Secret. Keep the name of this secret handy fo
 #### Clone this repo
 
 ```shell
-git clone https://github.com/RobinSystems/robin-storage
+git clone https://github.com/RobinSystems/robin-storage-gke-marketplace
 ```
 
 #### Install the Application resource definition
