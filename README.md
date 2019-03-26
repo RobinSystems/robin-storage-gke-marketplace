@@ -38,7 +38,7 @@ Create a new cluster from the command line:
 export CLUSTER=robin-cluster
 export ZONE=us-west1-a
 
-gcloud container clusters create "$CLUSTER" --zone "$ZONE" --image-type=UBUNTU
+gcloud container clusters create "$CLUSTER" --zone "$ZONE" --image-type=UBUNTU --machine-type "n1-standard-4" --scopes "https://www.googleapis.com/auth/cloud-platform"
 ```
 
 Configure `kubectl` to connect to the new cluster:
