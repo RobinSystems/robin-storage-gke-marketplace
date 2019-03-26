@@ -1,11 +1,6 @@
 # Overview
 
-Robin storage is .....
-
-The Robin storage performs these jobs:
-
-1. Creates and manages the robin cluster
-2. Supports snapshot,clone,rollback, ...
+ROBIN Storage for GKE is a purpose-built container-native storage solution that brings advanced data management capabilities to Kubernetes. It provides automated provisioning, point-in-time snapshots, backup and recovery, application cloning, QoS guarantee, and multi-cloud migration for stateful applications on Kubernetes. 
 
 Learn more about the [Robin](https://robin.io/).
 
