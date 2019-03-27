@@ -97,11 +97,11 @@ Configure the container images:
 
 ```shell
 TAG=5.1.0
-export IMAGE_ROBIN_OPERATOR="gcr.io/rock-range-207622/robin-storage/robin-operator:${TAG}"
-export IMAGE_ROBIN="gcr.io/rock-range-207622/robin-storage:${TAG}"
-export IMAGE_PROVISIONER="gcr.io/rock-range-207622/robin-storage/csi-provisioner:v0.4.1_robin"
+export IMAGE_ROBIN_OPERATOR="gcr.io/robinio-public/robin-storage/robin-operator:${TAG}"
+export IMAGE_ROBIN="gcr.io/robinio-public/robin-storage:${TAG}"
+export IMAGE_PROVISIONER="gcr.io/robinio-public/robin-storage/csi-provisioner:v0.4.1_robin"
 export REPORTING_SECRET=robin-1-reporting-secret
-export IMAGE_UBBAGENT=gcr.io/rock-range-207622/robin-storage/ubbagent:1.0
+export IMAGE_UBBAGENT=gcr.io/robinio-public/robin-storage/ubbagent:1.0
 ```
 
 The images above are referenced by

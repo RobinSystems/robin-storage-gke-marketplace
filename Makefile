@@ -9,12 +9,12 @@ $(info ---- TAG = $(TAG))
 
 APP_DEPLOYER_IMAGE ?= $(REGISTRY)/robin-storage/deployer:$(TAG)
 NAME ?= robin
-IMAGE_ROBIN_OPERATOR ?= "gcr.io/rock-range-207622/robin-storage/robin-operator:5.1.0"
-IMAGE_ROBIN ?= "gcr.io/rock-range-207622/robin-storage:5.1.0"
-IMAGE_PROVISIONER ?= "gcr.io/rock-range-207622/robin-storage/csi-provisioner:v0.4.1_robin"
+IMAGE_ROBIN_OPERATOR ?= "gcr.io/robinio-public/robin-storage/robin-operator:5.1.0"
+IMAGE_ROBIN ?= "gcr.io/robinio-public/robin-storage:5.1.0"
+IMAGE_PROVISIONER ?= "gcr.io/robinio-public/robin-storage/csi-provisioner:v0.4.1_robin"
 SERVICE_ACCOUNT ?= "marketplace-gke"
 REPORTING_SECRET ?= ""
-IMAGE_UBBAGENT ?= "gcr.io/rock-range-207622/robin-storage/ubbagent:1.0"
+IMAGE_UBBAGENT ?= "gcr.io/robinio-public/robin-storage/ubbagent:1.0"
 APP_PARAMETERS ?= { \
   "APP_INSTANCE_NAME": "$(NAME)", \
   "NAMESPACE": "kube-system", \
