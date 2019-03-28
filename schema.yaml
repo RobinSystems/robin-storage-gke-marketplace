@@ -11,7 +11,7 @@ properties:
       type: NAMESPACE
   IMAGE_ROBIN_OPERATOR:
     type: string
-    default: $REGISTRY/robinoperator:$TAG
+    default: $REGISTRY/robin-operator:$TAG
     x-google-marketplace:
       type: IMAGE
   IMAGE_ROBIN:
