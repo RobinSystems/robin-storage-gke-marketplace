@@ -41,7 +41,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: robin-operator
-  namespace: kube-system
+  namespace: robinio
   labels: 
     app.kubernetes.io/name: "$APP_INSTANCE_NAME"
 spec:
@@ -80,7 +80,7 @@ apiVersion: robin.io/v1alpha1
 kind: RobinCluster
 metadata:
   name: robin
-  namespace: kube-system
+  namespace: robinio
   labels: 
     app.kubernetes.io/name: "$APP_INSTANCE_NAME"
 spec:

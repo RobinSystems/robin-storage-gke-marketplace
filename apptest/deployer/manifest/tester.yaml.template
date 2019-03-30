@@ -2,7 +2,7 @@ apiVersion: v1
 kind: Pod
 metadata:
   name: "${APP_INSTANCE_NAME}-tester"
-  namespace: kube-system
+  namespace: robinio
   labels:
     app.kubernetes.io/name: "${APP_INSTANCE_NAME}"
   annotations:

@@ -129,8 +129,8 @@ permissions to manipulate Kubernetes resources.
 Provision a service account and export its via an environment variable as follows:
 
 ```shell
-kubectl create serviceaccount "${APP_INSTANCE_NAME}-sa" --namespace kube-system
-kubectl create clusterrolebinding "${APP_INSTANCE_NAME}-sa-rb" --clusterrole=cluster-admin --serviceaccount="kube-system:${APP_INSTANCE_NAME}-sa"
+kubectl create serviceaccount "${APP_INSTANCE_NAME}-sa" --namespace robinio
+kubectl create clusterrolebinding "${APP_INSTANCE_NAME}-sa-rb" --clusterrole=cluster-admin --serviceaccount="robinio:${APP_INSTANCE_NAME}-sa"
 export SERVICE_ACCOUNT="${APP_INSTANCE_NAME}-sa"
 ```
 
@@ -151,7 +151,7 @@ awk 'FNR==1 {print "---"}{print}' manifest/* \
 Use `kubectl` to apply the manifest to your Kubernetes cluster:
 
 ```shell
-kubectl apply -f "${APP_INSTANCE_NAME}_manifest.yaml" --namespace kube-system
+kubectl apply -f "${APP_INSTANCE_NAME}_manifest.yaml" --namespace robinio
 ```
 
 #### View the app in the Google Cloud Console
@@ -159,7 +159,7 @@ kubectl apply -f "${APP_INSTANCE_NAME}_manifest.yaml" --namespace kube-system
 To get the Console URL for your app, run the following command:
 
 ```shell
-echo "https://console.cloud.google.com/kubernetes/application/${ZONE}/${CLUSTER}/kube-system/${APP_INSTANCE_NAME}"
+echo "https://console.cloud.google.com/kubernetes/application/${ZONE}/${CLUSTER}/robinio/${APP_INSTANCE_NAME}"
 ```
 
 To view your app, open the URL in your browser.
@@ -202,14 +202,14 @@ installation.
 Run `kubectl` on the expanded manifest file:
 
 ```shell
-kubectl delete -f ${APP_INSTANCE_NAME}_manifest.yaml --namespace kube-system
+kubectl delete -f ${APP_INSTANCE_NAME}_manifest.yaml --namespace robinio
 ```
 
 Otherwise, delete the resources using types and a label:
 
 ```shell
 kubectl delete application,deployment\
-  --namespace kube-system\
+  --namespace robinio\
   --selector app.kubernetes.io/name=$APP_INSTANCE_NAME
 ```
 

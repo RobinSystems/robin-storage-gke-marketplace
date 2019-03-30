@@ -1,7 +1,7 @@
 set -eo pipefail
 
 export APP_INSTANCE_NAME="robin-$(cat /dev/urandom | tr -dc 'a-z0-9' | fold -w 8 | head -n 1)"
-export NAMESPACE=kube-system
+export NAMESPACE=robinio
 export IMAGE_ROBIN_OPERATOR=gcr.io/robinio-public/robin-storage/robin-operator:5.1.0
 export IMAGE_ROBIN=gcr.io/robinio-public/robin-storage:5.1.0
 export SERVICE_ACCOUNT=marketplace-gke

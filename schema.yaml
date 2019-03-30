@@ -6,9 +6,10 @@ properties:
       type: NAME
   NAMESPACE:
     type: string
-    default: kube-system
+    default: robinio
     x-google-marketplace:
       type: NAMESPACE
+    pattern: robinio
   IMAGE_ROBIN_OPERATOR:
     type: string
     default: $REGISTRY/robin-operator:$TAG
