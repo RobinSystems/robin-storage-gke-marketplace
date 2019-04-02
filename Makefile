@@ -8,7 +8,8 @@ TAG ?= 5.1.0
 $(info ---- TAG = $(TAG))
 
 APP_DEPLOYER_IMAGE ?= $(REGISTRY)/robin-storage/deployer:$(TAG)
-NAME ?= robin
+NAME ?= "robin"
+NAMESPACE ?= "robinio"
 IMAGE_ROBIN_OPERATOR ?= "gcr.io/robinio-public/robin-storage/robin-operator:5.1.0"
 IMAGE_ROBIN ?= "gcr.io/robinio-public/robin-storage:5.1.0"
 IMAGE_PROVISIONER ?= "gcr.io/robinio-public/robin-storage/csi-provisioner:v0.4.1_robin"
@@ -17,7 +18,7 @@ REPORTING_SECRET ?= ""
 IMAGE_UBBAGENT ?= "gcr.io/robinio-public/robin-storage/ubbagent:1.0"
 APP_PARAMETERS ?= { \
   "APP_INSTANCE_NAME": "$(NAME)", \
-  "NAMESPACE": "robinio", \
+  "NAMESPACE": "${NAMESPACE}", \
   "IMAGE_ROBIN_OPERATOR": "$(IMAGE_ROBIN_OPERATOR)", \
   "IMAGE_ROBIN": "$(IMAGE_ROBIN)", \
   "SERVICE_ACCOUNT": "$(SERVICE_ACCOUNT)", \
