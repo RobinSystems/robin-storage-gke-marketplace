@@ -55,7 +55,7 @@ gcloud auth configure-docker
 #### License Secret
 
 You must obtain a license secret from GCP Marketplace to launch this application.
-You can obtain the license from the listing page: https://console.cloud.google.com/marketplace/details/RobinIO/robin-storage.
+You can obtain the license from the listing page: https://console.cloud.google.com/marketplace/details/robinio-public/robin-storage.
 The license secret is a Kubernetes Secret. Keep the name of this secret handy for the following section.
 
 
@@ -92,6 +92,10 @@ Choose an instance name and namespace for the app.
 ```shell
 export APP_INSTANCE_NAME=robin
 export NAMESPACE=robinio
+```
+If the namespace is not present, create the namespace.
+```shell
+kubectl create namespace ${NAMESPACE}
 ```
 
 Configure the container images:
