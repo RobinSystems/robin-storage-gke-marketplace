@@ -87,10 +87,11 @@ community. The source code can be found on
 
 #### Configure the app with environment variables
 
-Choose an instance name for the app. 
+Choose an instance name and namespace for the app. 
 
 ```shell
 export APP_INSTANCE_NAME=robin
+export NAMESPACE=robinio
 ```
 
 Configure the container images:
@@ -129,8 +130,8 @@ permissions to manipulate Kubernetes resources.
 Provision a service account and export its via an environment variable as follows:
 
 ```shell
-kubectl create serviceaccount "${APP_INSTANCE_NAME}-sa" --namespace robinio
-kubectl create clusterrolebinding "${APP_INSTANCE_NAME}-sa-rb" --clusterrole=cluster-admin --serviceaccount="robinio:${APP_INSTANCE_NAME}-sa"
+kubectl create serviceaccount "${APP_INSTANCE_NAME}-sa" --namespace "${NAMESPACE}"
+kubectl create clusterrolebinding "${APP_INSTANCE_NAME}-sa-rb" --clusterrole=cluster-admin --serviceaccount="${NAMESPACE}:${APP_INSTANCE_NAME}-sa"
 export SERVICE_ACCOUNT="${APP_INSTANCE_NAME}-sa"
 ```
 
@@ -141,7 +142,7 @@ expanded manifest file for future updates to the application.
 
 ```shell
 awk 'FNR==1 {print "---"}{print}' manifest/* \
-  | envsubst '$APP_INSTANCE_NAME $IMAGE_ROBIN_OPERATOR $IMAGE_ROBIN
+  | envsubst '$APP_INSTANCE_NAME $NAMESPACE $IMAGE_ROBIN_OPERATOR $IMAGE_ROBIN
   $SERVICE_ACCOUNT $IMAGE_PROVISIONER $REPORTING_SECRET $IMAGE_UBBAGENT' \
   > "${APP_INSTANCE_NAME}_manifest.yaml"
 ```
@@ -151,7 +152,7 @@ awk 'FNR==1 {print "---"}{print}' manifest/* \
 Use `kubectl` to apply the manifest to your Kubernetes cluster:
 
 ```shell
-kubectl apply -f "${APP_INSTANCE_NAME}_manifest.yaml" --namespace robinio
+kubectl apply -f "${APP_INSTANCE_NAME}_manifest.yaml" --namespace "${NAMESPACE}"
 ```
 
 #### View the app in the Google Cloud Console
@@ -159,7 +160,7 @@ kubectl apply -f "${APP_INSTANCE_NAME}_manifest.yaml" --namespace robinio
 To get the Console URL for your app, run the following command:
 
 ```shell
-echo "https://console.cloud.google.com/kubernetes/application/${ZONE}/${CLUSTER}/robinio/${APP_INSTANCE_NAME}"
+echo "https://console.cloud.google.com/kubernetes/application/${ZONE}/${CLUSTER}/${NAMESPACE}/${APP_INSTANCE_NAME}"
 ```
 
 To view your app, open the URL in your browser.
@@ -168,7 +169,7 @@ To view your app, open the URL in your browser.
 
 ```
 # get status of the cluster
-$ kubectl get robinclusters/robin-cluster -o yaml
+$ kubectl get robinclusters/robin -n "${NAMESPACE}"
 
 ```
 
@@ -190,6 +191,7 @@ Set your installation name and Kubernetes namespace:
 
 ```shell
 export APP_INSTANCE_NAME=robin
+export NAMESPACE=robinio
 ```
 
 ### Delete the resources
@@ -202,14 +204,14 @@ installation.
 Run `kubectl` on the expanded manifest file:
 
 ```shell
-kubectl delete -f ${APP_INSTANCE_NAME}_manifest.yaml --namespace robinio
+kubectl delete -f ${APP_INSTANCE_NAME}_manifest.yaml --namespace "${NAMESPACE}"
 ```
 
 Otherwise, delete the resources using types and a label:
 
 ```shell
 kubectl delete application,deployment\
-  --namespace robinio\
+  --namespace ${NAMESPACE}\
   --selector app.kubernetes.io/name=$APP_INSTANCE_NAME
 ```
 
