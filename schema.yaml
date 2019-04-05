@@ -47,7 +47,6 @@ properties:
         roles:
         - type: ClusterRole
           rulesType: PREDEFINED
-          # TODO(barney-s): Reduce the permission set.
           rulesFromRoleName: cluster-admin
 required:
 - APP_INSTANCE_NAME
@@ -55,3 +54,10 @@ required:
 - IMAGE_ROBIN 
 - IMAGE_PROVISIONER
 - SERVICE_ACCOUNT
+
+x-google-marketplace:
+  clusterConstraints:
+    resources:
+    - requests:
+        cpu: 2000m
+        memory: 4Gi
