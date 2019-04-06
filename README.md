@@ -4,6 +4,17 @@ ROBIN Storage for GKE is a purpose-built container-native storage solution that 
 
 Learn more about the [Robin](https://robin.io/).
 
+---
+**NOTE**
+
+Robin can only be installed on the cluster which have 
+- Nodes have **ubuntu** image
+- Nodes have **more than 4GB memory** 
+- Cluster has **access to GCP disks and storage APIs**. If you are not sure, select "Allow full access to all Cloud APIs" while creating GKE cluster
+
+---
+
+
 # Installation
 
 ## Quick install with Google Cloud Marketplace
