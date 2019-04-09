@@ -26,7 +26,7 @@ Google Kubernetes Engine cluster using Google Cloud Marketplace. Follow the
 ---
 **NOTE**
 
-- Not to use "Create cluster" option as it will not create cluster with Robin requirements
+- Make sure not to use "Create cluster" option as it will not create cluster with Robin requirements
 
 ---
 
