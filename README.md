@@ -23,6 +23,13 @@ Get up and running with a few clicks! Install Robin storage app to a
 Google Kubernetes Engine cluster using Google Cloud Marketplace. Follow the
 [on-screen instructions](https://console.cloud.google.com/marketplace/details/google/robin-storage).
 
+---
+**NOTE**
+
+- Not to use "Create cluster" option as it will not create cluster with Robin requirements
+
+--
+
 ## Command line instructions
 
 You can use [Google Cloud Shell](https://cloud.google.com/shell/) or a local workstation in the
