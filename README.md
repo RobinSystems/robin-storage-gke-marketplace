@@ -191,7 +191,9 @@ To view your app, open the URL in your browser.
 
 ```
 # get status of the cluster
-$ kubectl get robinclusters/robin -n "${NAMESPACE}"
+$ kubectl describe robinclusters/robin -n "${NAMESPACE}"
+
+Use "Connect Command" from the output to connect to robin.
 
 ```
 
