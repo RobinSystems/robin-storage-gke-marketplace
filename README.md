@@ -26,7 +26,14 @@ Google Kubernetes Engine cluster using Google Cloud Marketplace. Follow the
 ---
 **NOTE**
 
-- Make sure not to use "Create cluster" option as it will not create cluster with Robin requirements
+- Make sure not to use "Create cluster" option as it will not create cluster with Robin requirements. You can use following commands to create GKE cluster 
+
+```shell
+export CLUSTER=robin-cluster
+export ZONE=us-west1-a
+
+gcloud container clusters create "$CLUSTER" --zone "$ZONE" --image-type=UBUNTU --machine-type "n1-standard-4" --scopes "https://www.googleapis.com/auth/cloud-platform"
+```
 
 ---
 
