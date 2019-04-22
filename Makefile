@@ -16,6 +16,7 @@ IMAGE_PROVISIONER ?= "gcr.io/robinio-public/robin-storage/csi-provisioner:v0.4.1
 SERVICE_ACCOUNT ?= "marketplace-gke"
 REPORTING_SECRET ?= ""
 IMAGE_UBBAGENT ?= "gcr.io/robinio-public/robin-storage/ubbagent:1.0"
+STORAGE_DISKS ?= "count=1,type=pd-ssd,size=200"
 APP_PARAMETERS ?= { \
   "APP_INSTANCE_NAME": "$(NAME)", \
   "NAMESPACE": "${NAMESPACE}", \
@@ -24,7 +25,8 @@ APP_PARAMETERS ?= { \
   "SERVICE_ACCOUNT": "$(SERVICE_ACCOUNT)", \
   "IMAGE_PROVISIONER": "$(IMAGE_PROVISIONER)", \
   "REPORTING_SECRET": "$(REPORTING_SECRET)", \
-  "IMAGE_UBBAGENT": "$(IMAGE_UBBAGENT)" \
+  "IMAGE_UBBAGENT": "$(IMAGE_UBBAGENT)", \
+  "STORAGE_DISKS": "$(STORAGE_DISKS)" \
 }
 TESTER_IMAGE ?= $(REGISTRY)/robin-storage/tester:$(TAG)
 APP_TEST_PARAMETERS ?= { \

@@ -28,6 +28,7 @@ export ZONE=us-west1-a
 
 gcloud container clusters create "$CLUSTER" --zone "$ZONE" --image-type=UBUNTU --machine-type "n1-standard-4" --scopes "https://www.googleapis.com/auth/cloud-platform"
 ```
+Also, here is the [video to create GKE cluster](https://youtu.be/5AyOxQvtCLI) with recommended configuration and access.
 
 Get up and running with a few clicks! Install Robin storage app to a
 Google Kubernetes Engine cluster using Google Cloud Marketplace. Please select the cluster created 
@@ -131,6 +132,7 @@ export IMAGE_ROBIN="gcr.io/robinio-public/robin-storage:${TAG}"
 export IMAGE_PROVISIONER="gcr.io/robinio-public/robin-storage/csi-provisioner:v0.4.1_robin"
 export REPORTING_SECRET=robin-1-reporting-secret
 export IMAGE_UBBAGENT=gcr.io/robinio-public/robin-storage/ubbagent:1.0
+export STORAGE_DISKS="count=1,type=pd-ssd,size=200"
 ```
 
 The images above are referenced by
@@ -171,7 +173,7 @@ expanded manifest file for future updates to the application.
 ```shell
 awk 'FNR==1 {print "---"}{print}' manifest/* \
   | envsubst '$APP_INSTANCE_NAME $NAMESPACE $IMAGE_ROBIN_OPERATOR $IMAGE_ROBIN
-  $SERVICE_ACCOUNT $IMAGE_PROVISIONER $REPORTING_SECRET $IMAGE_UBBAGENT' \
+  $SERVICE_ACCOUNT $IMAGE_PROVISIONER $REPORTING_SECRET $IMAGE_UBBAGENT $STORAGE_DISKS' \
   > "${APP_INSTANCE_NAME}_manifest.yaml"
 ```
 
@@ -213,10 +215,6 @@ You can verify the installation by running
 ```
 $ robin host list
 ```
-You need to add storage disks for Robin storage to use. You can add disks to hosts by running following commands
-```
-$ robin disk create <hostname> --type <pd-standard/pd-ssd> --size 500 --wait
-```
 
 Setup helm if you don't have it. Robin has helper utilities to initialize helm
 ```
@@ -232,7 +230,6 @@ $ helm install --name sales stable/postgresql --tls --set persistence.storageCla
 Use the output of command to connect to postgresql database.
 
 Please follow [product videos](https://robin.io/product/robin-storage-action/#postgres) for other data management capabilities 
-
 
 
 You can refer [user guide](https://s3-us-west-2.amazonaws.com/robinio-docs/5.1.0/install.html#verify-installation) for further details.

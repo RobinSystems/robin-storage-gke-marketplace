@@ -90,6 +90,7 @@ spec:
   image_provisioner: "$IMAGE_PROVISIONER"
   reporting_secret: "$REPORTING_SECRET"
   image_ubbagent: "$IMAGE_UBBAGENT"
+  storage_disks: "$STORAGE_DISKS"
   # kms: robin/google
   # kms_keyring: <keyring_name>
 

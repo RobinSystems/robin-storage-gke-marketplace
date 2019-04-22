@@ -7,4 +7,5 @@ export SERVICE_ACCOUNT=marketplace-gke
 export IMAGE_PROVISIONER=gcr.io/robinio-public/robin-storage/csi-provisioner:v0.4.1_robin
 export REPORTING_SECRET=reporting-sec
 export IMAGE_UBBAGENT=gcr.io/robinio-public/robin-storage/ubbagent:1.0
+export STORAGE_DISKS="count=1,type=pd-ssd,size=200"
 make app/install
