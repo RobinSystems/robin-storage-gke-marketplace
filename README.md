@@ -225,7 +225,7 @@ $ helm repo add stable https://kubernetes-charts.storage.googleapis.com
 
 Deploy a sample app to verify. Let's deploy postgresql
 ```
-$ helm install --name sales stable/postgresql --tls --set persistence.storageClass=robin-0-3
+$ helm install --name sales stable/postgresql --tls --set persistence.storageClass=robin-0-3 --tiller-namespace default
 ```
 Use the output of command to connect to postgresql database.
 
