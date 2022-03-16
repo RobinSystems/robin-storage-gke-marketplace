@@ -15,9 +15,10 @@ metadata:
 spec:
   descriptor:
     type: Robin Cluster
+    version: '5.3.10'
     description: |-
       Robin operator makes it easy to deploy and manage robin clusters.
-      version: 5.1.0
+      version: 5.3.10
       keywords:
       - big data 
       - databases
@@ -26,16 +27,15 @@ spec:
       # Support
     maintainers:
     - name: Robin Storage
-      url: https://robin.io/solutions/robin-storage-gke
+      url: https://robin.io/storage
     links:
-    - description: 'User Guide: Robin Storage'
-      url: https://get.robin.io/gke/docs/robin-storage
+    - description: 'User Guide: Robin Cloud Native Storage'
+      url: https://docs.robin.io/storage/latest/
     - description: Install on Google Kubernetes Engine
       url: https://github.com/RobinSystems/robin-storage-gke-marketplace/blob/master/README.md
     notes: |-
       Follow [Quick install](https://github.com/RobinSystems/robin-storage-gke-marketplace#quick-install-with-google-cloud-marketplace) to deploy your Robin Storage clusters.
 
-    addOwnerRef: true
   info:
 #  - name: Robin external IP
 #    type: Reference
@@ -69,10 +69,10 @@ spec:
   - group: apps/v1
     kind: Service
   - group: apps/v1
-    kind: ClusteRole
+    kind: ClusterRole
   - group: apps/v1
-    kind: ClusteRoleBinding
+    kind: ClusterRoleBinding
   - group: core/v1
     kind: ServiceAccount
-  - group: robin.io/v1alpha1
-    kind: RobinCluster
+  - group: batch/v1
+    kind: Job

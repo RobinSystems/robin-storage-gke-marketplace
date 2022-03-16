@@ -1,0 +1,426 @@
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.3.0
+  creationTimestamp: null
+  name: robinclusters.manage.robin.io
+  labels:
+    app.kubernetes.io/instance: robin
+    app.kubernetes.io/managed-by: robin.io
+    app.kubernetes.io/name: robin
+spec:
+  group: manage.robin.io
+  names:
+    kind: RobinCluster
+    listKind: RobinClusterList
+    plural: robinclusters
+    singular: robincluster
+  scope: Cluster
+  versions:
+  - name: v1
+    served: true
+    storage: true
+    schema:
+      openAPIV3Schema:
+        type: object
+        description: RobinCluster is the Schema for the robinclusters API
+        properties:
+          apiVersion:
+            description: 'APIVersion defines the versioned schema of this representation
+              of an object. Servers should convert recognized schemas to the latest
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+            type: string
+          kind:
+            description: 'Kind is a string value representing the REST resource this
+              object represents. Servers may infer this from the endpoint the client
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: RobinClusterSpec defines the desired state of RobinCluster
+            properties:
+              host_type:
+                enum:
+                - baremetal
+                - physical
+                - gcp
+                - ec2
+                - vmware
+                type: string
+              namespace:
+                type: string
+              image_provisioner:
+                type: string
+              image_provisioner_v04:
+                type: string
+              image_provisioner_v10:
+                type: string
+              image_robin:
+                description: 'INSERT ADDITIONAL SPEC FIELDS - desired state of cluster
+                  Important: Run "make" to regenerate code after modifying this file'
+                type: string
+              image_ubbagent:
+                type: string
+              k8s_provider:
+                enum:
+                - robin
+                - gke
+                - openshift
+                - aks
+                - iks
+                - eks
+                - rke
+                - upstream
+                type: string
+              kms:
+                enum:
+                - robin
+                - google
+                - vault
+                - ibmprotect
+                type: string
+              kms_keyring:
+                type: string
+              limits:
+                additionalProperties:
+                  type: string
+                type: object
+              node_selector:
+                additionalProperties:
+                  type: string
+                type: object
+              options:
+                additionalProperties:
+                  type: string
+                type: object
+              ports:
+                additionalProperties:
+                  type: string
+                type: object
+              reporting_secret:
+                type: string
+              requests:
+                additionalProperties:
+                  type: string
+                type: object
+              roles:
+                type: string
+              rootPasswordSecret:
+                description: Username            string                       `json:"username,omitempty"`
+                  Password            string                       `json:"password,omitempty"`
+                properties:
+                  name:
+                    description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                      TODO: Add other useful fields. apiVersion, kind, uid?'
+                    type: string
+                type: object
+              source:
+                type: string
+              storage_disks:
+                type: string
+              vip:
+                type: string
+            required:
+            - image_robin
+            type: object
+          status:
+            description: RobinClusterStatus defines the observed state of RobinCluster
+            properties:
+              connect_command:
+                type: string
+              get_robin_client:
+                type: string
+              master_ip:
+                type: string
+              phase:
+                type: string
+              pod_status:
+                description: 'INSERT ADDITIONAL STATUS FIELD - define observed state
+                  of cluster Important: Run "make" to regenerate code after modifying
+                  this file'
+                items:
+                  type: string
+                type: array
+              robin_node_status:
+                items:
+                  description: RNodeStatus Individual robin node status
+                  properties:
+                    host_name:
+                      type: string
+                    join_time:
+                      type: integer
+                    k8s_node_name:
+                      type: string
+                    roles:
+                      type: string
+                    rpool:
+                      type: string
+                    state:
+                      type: string
+                    status:
+                      type: string
+                    current_version:
+                      type: string
+                  required:
+                  - host_name
+                  - join_time
+                  - k8s_node_name
+                  - roles
+                  - rpool
+                  - state
+                  - status
+                  - current_version
+                  type: object
+                type: array
+            type: object
+    subresources:
+      status: {}
+status:
+  acceptedNames:
+    kind: ""
+    plural: ""
+  conditions: []
+  storedVersions: []
+---
+
+
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: robin-cr
+  namespace: "$NAMESPACE"
+data:
+  robin_cr.yaml: |-
+    apiVersion: manage.robin.io/v1
+    kind: RobinCluster
+    metadata:
+      name: robin
+      namespace: "$NAMESPACE"
+      labels:
+        app.kubernetes.io/instance: robin
+        app.kubernetes.io/managed-by: robin.io
+        app.kubernetes.io/name: "$APP_INSTANCE_NAME"
+    spec:
+      image_robin: "$IMAGE_ROBIN"
+      k8s_provider: gke
+      host_type: "$HOST_TYPE"
+      reporting_secret: "$REPORTING_SECRET"
+      image_ubbagent: "$IMAGE_UBBAGENT"
+      storage_disks: "$STORAGE_DISKS"
+      namespace: "$NAMESPACE"
+      # node_selector:
+      #  NODE_SELECTOR
+      # kms: robin/google/vault/ibmprotect
+      # kms_keyring: <keyring_name>
+      options:
+        robinlog_dir: "$ROBINLOG_DIR" # Path where robin logs should be stored on the host, default: /home/robinds
+        robincrash_dir: "$ROBINCRASH_DIR" # Path where robin crash are stored on the host, default: /home/robinds
+        robinds_dir: "$ROBINDS_DIR" # Path where robin database will be storaed on the host, default: /home/robinds
+        deployment_source: gcpmarketplace
+        update_coredns: "$UPDATE_COREDNS"      # If you set this option, set dns_service as well
+        dns_service: "$DNS_SERVICE" # Set it to "<DNS service Namespace>/<DNS Service name>" eg. "kube-system/kube-dns"
+        # update_etc_hosts: "1"
+        # cloud_cred_secret: CLOUD_CRED_SECRET
+        # robin_devmode: "true"
+        # vault_addr: "VAULT_ADDR" # VAULT_CONFIG
+        # vault_robin_keys_path: "VAULT_ROBIN_KEYS_PATH" # VAULT_CONFIG
+        # vault_cacert: "/etc/vault-ca/ca.crt" # VAULT_CONFIG
+        # vault_client_cert: "/etc/vault-client/tls.crt" # VAULT_CONFIG
+        # vault_client_key: "/etc/vault-client/tls.key" # VAULT_CONFIG
+        # vault_token: "VAULT_TOKEN" # VAULT_CONFIG
+        # vault_skip_verify: "VAULT_SKIP_VERIFY" # VAULT_CONFIG
+        # vault_namespace: "VAULT_NAMESPACE" # VAULT_CONFIG
+        # ibm_iam_endpoint: IBM_IAM_EP
+        # ibm_iaas_base_endpoint: IBM_IAAS_EP
+        # ibm_containers_base_endpoint: IBM_CONTAINERS_BASE_EP
+        # kms_endpoint: "KMS_ENDPOINT" # IBMPROTECT_CONFIG
+        # ibmprotect_instance_id: "IBMPROTECT_INSTANCE_ID" # IBMPROTECT_CONFIG
+        # ibmprotect_cred_secret: "/etc/ibmprotect/api_key" # IBMPROTECT_CONFIG
+        # http_proxy: HTTP_PROXY
+        # https_proxy: HTTPS_PROXY
+        # ftp_proxy: FTP_PROXY
+        # proxy_certificate: PROXY_CERTIFICATE_PATH
+      # ports:
+      #   SERVER_REST_PORT: 29442
+      # requests:
+      #   cpu: "2"
+      #   memory: "2Gi"
+      # limits:
+      #   cpu: "2"
+      #   memory: "2Gi"
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: robin-operator
+  namespace: "$NAMESPACE"
+  labels:
+    app.kubernetes.io/instance: robin
+    app.kubernetes.io/managed-by: robin.io
+    app.kubernetes.io/name: "$APP_INSTANCE_NAME"
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: robin-operator
+  template:
+    metadata:
+      annotations:
+        productID: 694dbfaf-3351-483d-b0d1-4d576d123fc7
+        productName: robin-cns
+        productVersion: 5.3.8-73
+      labels:
+        name: robin-operator
+        app.kubernetes.io/instance: robin
+        app.kubernetes.io/managed-by: robin.io
+        app.kubernetes.io/name: "$APP_INSTANCE_NAME"
+    spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: kubernetes.io/arch
+                operator: In
+                values:
+                - amd64
+      serviceAccountName: "$SERVICE_ACCOUNT"
+      hostIPC: false
+      hostNetwork: false
+      hostPID: false
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1001
+      containers:
+        - name: robin-operator
+          # Replace this with the built image name
+          image: "$IMAGE_ROBIN_OPERATOR"
+          readinessProbe:
+            exec:
+              command:
+              - id
+            initialDelaySeconds: 2
+            periodSeconds: 2
+          livenessProbe:
+            failureThreshold: 5
+            exec:
+              command:
+              - id
+            initialDelaySeconds: 30
+            timeoutSeconds: 3
+            periodSeconds: 30
+          resources:
+            limits:
+              cpu: 4
+              memory: 4Gi
+            requests:
+              cpu: 100m
+              memory: 200Mi
+          securityContext:
+            allowPrivilegeEscalation: false
+            privileged: false
+            capabilities:
+              drop:
+              - ALL
+            readOnlyRootFilesystem: false
+          env:
+            - name: WATCH_NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+            - name: POD_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: OPERATOR_NAME
+              value: "robin-operator"
+
+---
+
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: robin-cr
+  namespace: "$NAMESPACE"
+spec:
+  template:
+    spec:
+      serviceAccountName: "$SERVICE_ACCOUNT"
+      containers:
+      - name: robin-cr-deployer
+        image: "$IMAGE_CRJOB"
+        command: [ "/root/entry.sh" ]
+        volumeMounts:
+        - name: config-volume
+          mountPath: /robin_cr
+        env:
+        - name: APP_INSTANCE_NAME
+          value: "$APP_INSTANCE_NAME"
+        - name: NAMESPACE
+          valueFrom:
+            fieldRef:
+              apiVersion: v1
+              fieldPath: metadata.namespace
+      restartPolicy: Never
+      volumes:
+      - name: config-volume
+        configMap:
+          name: robin-cr
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: robin-monitor
+  namespace: "$NAMESPACE"
+  labels:
+    app: robin-monitor
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: robin-monitor
+  template:
+    metadata:
+      labels:
+        app: robin-monitor
+    spec:
+      terminationGracePeriodSeconds: 120
+      serviceAccountName: robin
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+          - labelSelector:
+              matchExpressions:
+              - key: app
+                operator: In
+                values:
+                - robin-monitor
+            topologyKey: "kubernetes.io/hostname"
+      tolerations:
+      - effect: NoSchedule
+        operator: Exists
+      containers:
+      - name: monitor
+        image: robinsys/robin-monitor:5.1.13
+        command: [ "/entrypoint.sh"]
+        env:
+        - name: MY_NODE_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: spec.nodeName
+        volumeMounts:
+        - mountPath: /etc/secrets/robin-token
+          name: robin-token
+          readOnly: true
+      volumes:
+      - name: robin-token
+        secret:
+          defaultMode: 420
+          secretName: robin-token
+---

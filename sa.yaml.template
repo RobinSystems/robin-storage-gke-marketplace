@@ -1,0 +1,93 @@
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  labels:
+    app.kubernetes.io/component: deployer.marketplace.cloud.google.com
+    app.kubernetes.io/name: $APP_INSTANCE_NAME
+    marketplace.cloud.google.com/deployer: Dependent
+  name: $APP_INSTANCE_NAME-deployer-sa
+  namespace: $NAMESPACE
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  labels:
+    app.kubernetes.io/component: deployer-rbac.marketplace.cloud.google.com
+    app.kubernetes.io/name: $APP_INSTANCE_NAME
+    app.kubernetes.io/namespace: $NAMESPACE
+    marketplace.cloud.google.com/deployer: Dependent
+  name: $APP_INSTANCE_NAME:$NAMESPACE:deployer-cr0
+rules:
+- apiGroups:
+  - '*'
+  resources:
+  - namespaces
+  - nodes
+  - nodes/stats
+  - nodes/proxy
+  - pods
+  - storageclasses
+  - persistentvolumes
+  - persistentvolumeclaims
+  - persistentvolumeclaims/status
+  - volumeattachments
+  - volumeattachments/status
+  - volumesnapshotclasses
+  - volumesnapshots
+  - volumesnapshots/status
+  - volumesnapshotcontents
+  - volumesnapshotcontents/status
+  - namespaces
+  - events
+  - configmaps
+  - secrets
+  - services
+  - services/status
+  - customresourcedefinitions
+  - robinclusters
+  - robinclusters/status
+  - tokenreviews
+  - subjectaccessreviews
+  - endpoints
+  - statefulsets
+  - deployments
+  - daemonsets
+  - replicasets
+  - rolebindings
+  - clusterrolebindings
+  - clusterroles
+  - roles
+  - jobs
+  - serviceaccounts
+  - certificatesigningrequests
+  - certificatesigningrequests/approval
+  - applications
+  verbs:
+  - '*'
+- apiGroups:
+  - certificates.k8s.io
+  resourceNames:
+  - kubernetes.io/legacy-unknown
+  resources:
+  - signers
+  verbs:
+  - '*'
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  labels:
+    app.kubernetes.io/component: deployer-rbac.marketplace.cloud.google.com
+    app.kubernetes.io/name: $APP_INSTANCE_NAME
+    app.kubernetes.io/namespace: $NAMESPACE
+    marketplace.cloud.google.com/deployer: Dependent
+  name: $APP_INSTANCE_NAME:$NAMESPACE:deployer-crb0
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: $APP_INSTANCE_NAME:$NAMESPACE:deployer-cr0
+subjects:
+- kind: ServiceAccount
+  name: $APP_INSTANCE_NAME-deployer-sa
+  namespace: $NAMESPACE
